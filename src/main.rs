@@ -49,5 +49,6 @@ impl LibreOffice {
 async fn main2() -> Result<(), anyhow::Error> {
     let l = LibreOffice;
     let arch = &l.download(Path::new("/tmp/")).await?;
+    l.extract(arch, Path::new(r#"c:\users\yuyeu\tempexp"#))?;
     Ok(())
 }
