@@ -1,8 +1,8 @@
-mod paf;
 use std::{
     fs::File,
     io::{BufWriter, Write},
     path::{Path, PathBuf},
+    process::Command,
 };
 
 use anyhow::anyhow;
@@ -36,6 +36,13 @@ impl LibreOffice {
             local_file.write_all(x.as_ref())?;
         }
         Ok(local_file_path)
+    }
+    fn extract(&self, archive_path: &Path, target_dir: &Path) -> Result<(), anyhow::Error> {
+        Command::new(archive_path)
+            .arg("/S")
+            .arg(format!("/D={}", target_dir.to_string_lossy()))
+            .output()?;
+        Ok(())
     }
 }
 
