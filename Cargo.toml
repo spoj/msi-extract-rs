@@ -5,3 +5,7 @@ edition = "2024"
 
 [dependencies]
 anyhow = "1.0.98"
+cab = "0.6.0"
+cfb = "0.10.0"
+itertools = "0.14.0"
+msi = "0.8.0"
