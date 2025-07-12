@@ -168,23 +168,23 @@ where
         })
     }
     pub fn to<P: AsRef<Path>>(&mut self, target: P) {
-        self.cab
+        let files: Vec<String> = self
+            .cab
             .folder_entries()
             .flat_map(|f| f.file_entries())
-            .for_each(|f| {
-                let file = f.name();
-                if let Ok(path) = self.traverser.resolve(file) {
-                    let target = target.as_ref().join(path);
-                    if let Some(dir) = target.parent()
-                        && let Ok(()) = std::fs::create_dir_all(dir)
-                        && let Ok(mut target_file) = File::create(&target)
-                    {
-                        let mut data = file.as_bytes();
-                        let _ = std::io::copy(&mut data, &mut target_file);
-                        // println!("writing {} bytes to {:?}", data.len(), &target);
-                    }
-                }
-            });
+            .map(|f| f.name().to_owned())
+            .collect();
+        files.iter().for_each(|file| {
+            if let Ok(path) = self.traverser.resolve(file)
+                && let target = target.as_ref().join(path)
+                && let Some(dir) = target.parent()
+                && let Ok(()) = std::fs::create_dir_all(dir)
+                && let Ok(mut target_file) = File::create(&target)
+                && let Ok(mut data) = self.cab.read_file(file)
+            {
+                let _ = std::io::copy(&mut data, &mut target_file);
+            }
+        });
     }
 }
 
