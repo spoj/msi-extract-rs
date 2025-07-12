@@ -127,6 +127,7 @@ impl MsiTraverser {
 }
 
 pub struct MsiExtractor<F> {
+    _package: msi::Package<F>,
     cab: Cabinet<StreamReader<F>>,
     traverser: MsiTraverser,
 }
@@ -144,7 +145,11 @@ where
         let stream = package.read_stream(&cab_name)?;
         let cab = Cabinet::new(stream)?;
 
-        Ok(MsiExtractor { cab, traverser })
+        Ok(MsiExtractor {
+            _package: package,
+            cab,
+            traverser,
+        })
     }
     pub fn from_reader(reader: F) -> Result<MsiExtractor<F>, Error> {
         let mut package = msi::Package::open(reader)?;
@@ -156,7 +161,11 @@ where
         let stream = package.read_stream(&cab_name)?;
         let cab = Cabinet::new(stream)?;
 
-        Ok(MsiExtractor { cab, traverser })
+        Ok(MsiExtractor {
+            _package: package,
+            cab,
+            traverser,
+        })
     }
     pub fn to<P: AsRef<Path>>(&mut self, target: P) {
         self.cab
@@ -194,6 +203,10 @@ impl MsiExtractor<File> {
         let stream = package.read_stream(&cab_name)?;
         let cab = Cabinet::new(stream)?;
 
-        Ok(MsiExtractor { cab, traverser })
+        Ok(MsiExtractor {
+            _package: package,
+            cab,
+            traverser,
+        })
     }
 }
