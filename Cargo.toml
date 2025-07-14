@@ -6,7 +6,8 @@ description = "A library to extract files from MSI packages."
 license = "MIT"
 
 [dependencies]
-cab = "0.6.0"
+# cab = "0.6.0"
+cab = { path = "../rust-cab" }
 cfb = "0.10.0"
 msi = "0.8.0"
 thiserror = "2.0.12"
