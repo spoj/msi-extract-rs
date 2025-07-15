@@ -7,7 +7,7 @@ license = "MIT"
 
 [dependencies]
 # cab = "0.6.0"
-cab = { path = "../rust-cab" }
+cab = { git = "https://github.com/spoj/rust-cab", branch = "dev-iter" }
 cfb = "0.10.0"
 msi = "0.8.0"
 thiserror = "2.0.12"
